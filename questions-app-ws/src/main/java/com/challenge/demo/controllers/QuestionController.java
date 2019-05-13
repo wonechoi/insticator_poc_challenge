@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.challenge.demo.Entities.Question;
 import com.challenge.demo.Entities.QuestionAnswer;
+import com.challenge.demo.Entities.QuestionHeader;
 import com.challenge.demo.dto.QuestionAnswerDTO;
 import com.challenge.demo.dto.QuestionDTO;
+import com.challenge.demo.dto.QuestionHeaderDTO;
 import com.challenge.demo.repositories.QuestionAnswerRepository;
+import com.challenge.demo.repositories.QuestionHeaderRepository;
 import com.challenge.demo.repositories.QuestionRepository;
 import com.challenge.demo.repositories.SiteRepository;
 
@@ -37,6 +40,9 @@ public class QuestionController {
 	@Autowired
 	QuestionAnswerRepository qaRepository;
 
+	@Autowired
+	QuestionHeaderRepository qhRepository;
+	
 	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<QuestionDTO> createQuestion(@RequestBody QuestionDTO incomingQuestion) {
@@ -90,6 +96,28 @@ public class QuestionController {
 				.orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
+	@PostMapping("/{id}/headers")
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<QuestionHeaderDTO> createQuestionHeaders(@PathVariable(value = "id") Long questionId,
+																   @RequestBody QuestionHeaderDTO newQHDto) {
+		return questionRepository
+				.findById(questionId)
+				.map(question -> {
+					final QuestionHeader newQh = QuestionHeaderDTO.transform(newQHDto, question);
+					return new ResponseEntity<>(QuestionHeaderDTO.build(qhRepository.save(newQh)), HttpStatus.CREATED);
+				})
+				.orElseGet(() -> ResponseEntity.notFound().build());
+	}
+
+	@GetMapping("/{id}/headers")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<List<QuestionHeaderDTO>> getQuestionHeaders(@PathVariable(value = "id") Long questionId) {
+		return questionRepository
+				.findById(questionId)
+				.map(question -> ResponseEntity.ok(QuestionHeaderDTO.build(question.getHeaders())))
+				.orElseGet(() -> ResponseEntity.notFound().build());
+	}
+	
 	@PostMapping("/{id}/answers")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<QuestionAnswerDTO> createQuestionAnswers(@PathVariable(value = "id") Long questionId,

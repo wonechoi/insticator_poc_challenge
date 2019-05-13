@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.challenge.demo.Entities.Question;
+import com.challenge.demo.Entities.QuestionType;
 import com.challenge.demo.Entities.Site;
 
 public class QuestionDTO {
@@ -15,6 +16,8 @@ public class QuestionDTO {
 
 	private String question;
 
+	private QuestionType type;
+
 	private Date createdAt;
 
 	private Date updatedAt;
@@ -24,6 +27,7 @@ public class QuestionDTO {
 		obj.setSiteId(question.getSite().getSiteId());
 		obj.setQuestionId(question.getQuestionId());
 		obj.setQuestion(question.getQuestion());
+		obj.setType(question.getType());
 		obj.setUpdatedAt(question.getUpdatedAt());
 		obj.setCreatedAt(question.getCreatedAt());
 
@@ -44,7 +48,7 @@ public class QuestionDTO {
 		final Question newQ = new Question();
 		newQ.setSite(site);
 		newQ.setQuestion(incomingQuestion.getQuestion());
-
+		newQ.setType(incomingQuestion.getType());
 		return newQ;
 	}
 
@@ -62,6 +66,14 @@ public class QuestionDTO {
 
 	public void setQuestion(final String question) {
 		this.question = question;
+	}
+	
+	public QuestionType getType() {
+		return type;
+	}
+
+	public void setType(QuestionType type) {
+		this.type = type;
 	}
 
 	public Date getCreatedAt() {

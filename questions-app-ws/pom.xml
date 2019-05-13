@@ -8,7 +8,7 @@
 		<version>2.1.4.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.challenge</groupId>
+	<groupId>com.challenge.demo</groupId>
 	<artifactId>questions-app-ws</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>questions-app-ws</name>
