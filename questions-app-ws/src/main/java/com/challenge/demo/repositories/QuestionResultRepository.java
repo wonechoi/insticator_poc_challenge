@@ -14,7 +14,7 @@ public interface QuestionResultRepository extends JpaRepository<QuestionResult, 
 	
 	@Transactional
 	@Modifying
-	@Query(value = "UPDATE QUESTION_RESULT SET LOOPED = 1 WHERE site_uuid = ?1 and user_uuid = ?2", nativeQuery = true)
+	@Query(value = "UPDATE QUESTION_RESULT SET LOOPED = 1 WHERE site_uuid = :siteUUID and user_uuid = :userUUID", nativeQuery = true)
 	void setLoopedTrue(UUID siteUUID, UUID userUUID);
 
 

@@ -3,6 +3,7 @@ package com.challenge.demo.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,10 +33,10 @@ import java.util.Optional;
 public class QuestionController {
 
 	@Autowired
-	QuestionRepository questionRepository;
-
-	@Autowired
 	SiteRepository siteRepository;
+	
+	@Autowired
+	QuestionRepository questionRepository;
 
 	@Autowired
 	QuestionAnswerRepository qaRepository;
@@ -55,6 +56,7 @@ public class QuestionController {
 				.orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
+	@Transactional
 	@GetMapping()
 	public ResponseEntity<List<QuestionDTO>> getSites() {
 		return Optional
@@ -77,12 +79,19 @@ public class QuestionController {
 				.orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
+	/*
+	 * Change
+	 * - delete related Question Headers, Answers, Results together.
+	 */
+	@Transactional
 	@DeleteMapping("/{id}")
 	public ResponseEntity<QuestionDTO> deleteQuestion(@PathVariable(value = "id") Long questionId) {
 		return questionRepository
 				.findById(questionId)
 				.map(question -> {
-					questionRepository.delete(question);
+					qaRepository.deleteByQuestionId(questionId);
+					qhRepository.deleteByQuestionId(questionId);
+					questionRepository.deleteById(questionId);
 					return ResponseEntity.ok(QuestionDTO.build(question));
 				})
 				.orElseGet(() -> ResponseEntity.notFound().build());
@@ -96,6 +105,12 @@ public class QuestionController {
 				.orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
+	/*
+	 * Add
+	 * - Create new QuestionHeader
+	 * - Create Get headers with question id 
+	 * - Delete QuestionHeaders with header id
+	 */
 	@PostMapping("/{id}/headers")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<QuestionHeaderDTO> createQuestionHeaders(@PathVariable(value = "id") Long questionId,
@@ -118,6 +133,17 @@ public class QuestionController {
 				.orElseGet(() -> ResponseEntity.notFound().build());
 	}
 	
+	@DeleteMapping("/{id}/headers")
+	public ResponseEntity<QuestionHeaderDTO> deleteQuestionHeader(@PathVariable(value = "id") Long questionHeaderId) {
+		return qhRepository
+				.findById(questionHeaderId)
+				.map(questionHeader -> {
+					qhRepository.deleteById(questionHeaderId);
+					return ResponseEntity.ok(QuestionHeaderDTO.build(questionHeader));
+				})
+				.orElseGet(() -> ResponseEntity.notFound().build());
+	}
+	
 	@PostMapping("/{id}/answers")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<QuestionAnswerDTO> createQuestionAnswers(@PathVariable(value = "id") Long questionId,
@@ -137,6 +163,21 @@ public class QuestionController {
 		return questionRepository
 				.findById(questionId)
 				.map(question -> ResponseEntity.ok(QuestionAnswerDTO.build(question.getAnswers())))
+				.orElseGet(() -> ResponseEntity.notFound().build());
+	}
+	
+	/*
+	 * Add 
+	 * - Delete Answers with answer id
+	 */
+	@DeleteMapping("/{id}/answers")
+	public ResponseEntity<QuestionAnswerDTO> deleteQuestionAnswer(@PathVariable(value = "id") Long questionAnswerId) {
+		return qaRepository
+				.findById(questionAnswerId)
+				.map(questionAnswer -> {
+					qaRepository.deleteById(questionAnswerId);
+					return ResponseEntity.ok(QuestionAnswerDTO.build(questionAnswer));
+				})
 				.orElseGet(() -> ResponseEntity.notFound().build());
 	}
 }
