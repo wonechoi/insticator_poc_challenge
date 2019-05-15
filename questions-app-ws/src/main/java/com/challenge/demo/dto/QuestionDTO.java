@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Hibernate;
+import org.modelmapper.ModelMapper;
+
+
 import com.challenge.demo.Entities.Question;
 import com.challenge.demo.Entities.QuestionType;
 import com.challenge.demo.Entities.Site;
@@ -17,20 +21,22 @@ public class QuestionDTO {
 	private String question;
 
 	private QuestionType type;
+	
+	private List<QuestionHeaderDTO> headers = new ArrayList<>();
 
+	private List<QuestionAnswerDTO> answers = new ArrayList<>();
+	
 	private Date createdAt;
 
 	private Date updatedAt;
 
 	public static QuestionDTO build(Question question) {
-		final QuestionDTO obj = new QuestionDTO();
-		obj.setSiteId(question.getSite().getSiteId());
-		obj.setQuestionId(question.getQuestionId());
-		obj.setQuestion(question.getQuestion());
-		obj.setType(question.getType());
-		obj.setUpdatedAt(question.getUpdatedAt());
-		obj.setCreatedAt(question.getCreatedAt());
-
+		
+		
+		ModelMapper modelMapper = new ModelMapper();
+		Hibernate.initialize(question.getHeaders());
+		final QuestionDTO obj = modelMapper.map(question, QuestionDTO.class);	
+		
 		return obj;
 	}
 
@@ -74,6 +80,22 @@ public class QuestionDTO {
 
 	public void setType(QuestionType type) {
 		this.type = type;
+	}
+
+	public List<QuestionHeaderDTO> getHeaders() {
+		return headers;
+	}
+
+	public void setHeaders(List<QuestionHeaderDTO> headers) {
+		this.headers = headers;
+	}
+
+	public List<QuestionAnswerDTO> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(List<QuestionAnswerDTO> answers) {
+		this.answers = answers;
 	}
 
 	public Date getCreatedAt() {

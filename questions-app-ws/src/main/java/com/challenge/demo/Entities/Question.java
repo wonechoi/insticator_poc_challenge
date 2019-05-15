@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -49,7 +50,7 @@ public class Question implements Serializable {
 	@Column(nullable = false)
 	private QuestionType type;
 	
-	@OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<QuestionHeader> headers = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
@@ -77,6 +78,10 @@ public class Question implements Serializable {
 		return questionId;
 	}
 	
+	public void setQuestionId(Long questionId) {
+		this.questionId = questionId;
+	}
+
 	public QuestionType getType() {
 		return type;
 	}

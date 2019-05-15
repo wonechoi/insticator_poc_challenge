@@ -39,8 +39,6 @@ public class WidgetServiceImpl implements WidgetService {
 	@Override
 	public QuestionDTO getNextQuestion(UUID siteUUID, UUID userUUID) {
 		
-		QuestionDTO questionDto = new QuestionDTO();
-		
 		Question question = questionRepository.findNextQuestion(siteUUID, userUUID);
 		
 		if(question == null) {
@@ -48,7 +46,7 @@ public class WidgetServiceImpl implements WidgetService {
 			question = questionRepository.findNextQuestion(siteUUID, userUUID);
 		}
 		
-		BeanUtils.copyProperties(question, questionDto);
+		QuestionDTO questionDto = QuestionDTO.build(question);
 		
 		return questionDto;
 	}
