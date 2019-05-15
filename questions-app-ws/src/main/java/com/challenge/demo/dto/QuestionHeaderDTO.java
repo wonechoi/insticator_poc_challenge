@@ -13,6 +13,10 @@ public class QuestionHeaderDTO {
 
 	private Long questionId;
 
+	private String headerType;
+	
+	private int headerOrder;
+	
 	private String header;
 
 	private Date createdAt;
@@ -21,6 +25,8 @@ public class QuestionHeaderDTO {
 	
 	public static QuestionHeader transform(final QuestionHeaderDTO newQHDto, final Question question) {
 		final QuestionHeader newQh = new QuestionHeader();
+		newQh.setHeaderType(newQHDto.getHeaderType());
+		newQh.setHeaderOrder(newQHDto.getHeaderOrder());
 		newQh.setHeader(newQHDto.getHeader());
 		newQh.setQuestion(question);
 
@@ -31,6 +37,8 @@ public class QuestionHeaderDTO {
 		final QuestionHeaderDTO newQhDto = new QuestionHeaderDTO();
 
 		newQhDto.setId(save.getId());
+		newQhDto.setHeaderType(save.getHeaderType());
+		newQhDto.setHeaderOrder(save.getHeaderOrder());
 		newQhDto.setHeader(save.getHeader());
 		newQhDto.setCreatedAt(save.getCreatedAt());
 		newQhDto.setUpdatedAt(save.getUpdatedAt());
@@ -61,6 +69,22 @@ public class QuestionHeaderDTO {
 
 	public void setQuestionId(Long questionId) {
 		this.questionId = questionId;
+	}
+
+	public String getHeaderType() {
+		return headerType;
+	}
+
+	public void setHeaderType(String headerType) {
+		this.headerType = headerType;
+	}
+
+	public int getHeaderOrder() {
+		return headerOrder;
+	}
+
+	public void setHeaderOrder(int headerOrder) {
+		this.headerOrder = headerOrder;
 	}
 
 	public String getHeader() {

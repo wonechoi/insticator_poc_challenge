@@ -38,7 +38,13 @@ public class QuestionHeader implements Serializable{
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "question_id", referencedColumnName = "question_id")
 	private Question question;
-
+	
+	@Column(name = "header_type", nullable = false)
+	private String headerType;
+	
+	@Column(name = "header_order", nullable = false)
+	private int headerOrder;
+	
 	private String header;
 
 	@Column(nullable = false, updatable = false)
@@ -65,6 +71,22 @@ public class QuestionHeader implements Serializable{
 
 	public void setQuestion(Question question) {
 		this.question = question;
+	}
+
+	public String getHeaderType() {
+		return headerType;
+	}
+
+	public void setHeaderType(String headerType) {
+		this.headerType = headerType;
+	}
+
+	public int getHeaderOrder() {
+		return headerOrder;
+	}
+
+	public void setHeaderOrder(int headerOrder) {
+		this.headerOrder = headerOrder;
 	}
 
 	public String getHeader() {
