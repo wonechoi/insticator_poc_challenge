@@ -10,6 +10,8 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,7 +21,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "site")
+@Table(name = "site", indexes = @Index(columnList = ("site_uuid"), name="IDX_SITE_UUID", unique = true))
 @EntityListeners(AuditingEntityListener.class)
 public class Site implements Serializable {
 	private static final long serialVersionUID = 1L;

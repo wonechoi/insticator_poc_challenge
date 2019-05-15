@@ -34,6 +34,9 @@ public class SiteController {
 	public Site createSite(@RequestBody Site createSite) {
 		createSite.setSiteUUID(UUID.randomUUID());
 
+		System.out.println("UUID: "+ createSite.getSiteUUID());
+		System.out.println("RandomID:"+UUID.randomUUID());
+		System.out.println("RandomID:"+UUID.randomUUID());
 		return siteRepository.save(createSite);
 	}
 
