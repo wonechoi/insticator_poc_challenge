@@ -37,7 +37,7 @@ public class WidgetServiceImpl implements WidgetService {
 	QuestionResultRepository qrRepository;
 	
 	@Override
-	public QuestionDTO getNextQuestion(UUID siteUUID, UUID userUUID) {
+	public ResponseEntity<QuestionDTO> getNextQuestion(UUID siteUUID, UUID userUUID) {
 		
 		Question question = questionRepository.findNextQuestion(siteUUID, userUUID);
 		
@@ -48,7 +48,9 @@ public class WidgetServiceImpl implements WidgetService {
 		
 		QuestionDTO questionDto = QuestionDTO.build(question);
 		
-		return questionDto;
+		if(question == null) return ResponseEntity.notFound().build();
+		
+		return new ResponseEntity<>(questionDto, HttpStatus.FOUND);
 	}
 
 	@Override

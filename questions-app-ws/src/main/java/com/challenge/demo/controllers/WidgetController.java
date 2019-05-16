@@ -25,7 +25,7 @@ public class WidgetController {
 	
 	@GetMapping(path="/{siteUUID}/{userUUID}", 
 			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-	public QuestionDTO getSites(@PathVariable(value = "siteUUID") String siteUUID, @PathVariable(value = "userUUID") String userUUID) {
+	public ResponseEntity<QuestionDTO> getSites(@PathVariable(value = "siteUUID") String siteUUID, @PathVariable(value = "userUUID") String userUUID) {
 		
 		return  widgetService.getNextQuestion(UUID.fromString(siteUUID), UUID.fromString(userUUID));
 		

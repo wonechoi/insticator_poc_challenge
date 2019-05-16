@@ -12,7 +12,7 @@ public interface WidgetService {
 
 	// serve up a unique question which a user has not gotten to users
 	@Transactional
-	public QuestionDTO getNextQuestion(UUID siteUUID, UUID userUUID);
+	public ResponseEntity<QuestionDTO> getNextQuestion(UUID siteUUID, UUID userUUID);
 
 	// store a user response
 	public ResponseEntity<QuestionResultDTO> saveQuestionResult(UUID siteUUID, UUID userUUID,
