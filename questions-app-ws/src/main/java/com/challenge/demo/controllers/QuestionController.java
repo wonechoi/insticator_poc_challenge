@@ -58,7 +58,7 @@ public class QuestionController {
 
 	@Transactional
 	@GetMapping()
-	public ResponseEntity<List<QuestionDTO>> getSites() {
+	public ResponseEntity<List<QuestionDTO>> getQuestions() {
 		return Optional
 				.ofNullable(questionRepository.findAll())
 				.map(questions -> ResponseEntity.ok(QuestionDTO.build(questions)))
